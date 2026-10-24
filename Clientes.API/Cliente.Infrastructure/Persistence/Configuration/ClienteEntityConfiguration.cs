@@ -37,6 +37,10 @@ namespace Clientes.Infrastructure.Persistence.Configuration
             builder.Property(x => x.CreatAt)
                 .HasColumnType("datetime")
                 .IsRequired();
+
+            builder.Property(x => x.RendaMensal)
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
         }
     }
 }
