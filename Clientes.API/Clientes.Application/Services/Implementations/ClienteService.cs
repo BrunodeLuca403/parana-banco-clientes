@@ -22,11 +22,15 @@ namespace Clientes.Application.Services.Implementations
                 if (await _clienteRepository.ExisteCpfAsync(request.Cpf))
                     return ResultViewModel<ClienteResponse>.Failure(Error.Validation("Clientes.Application.Services.Implementations.CadastrarCliente", "Já existe um cliente cadastrado com este CPF."));
 
-                var cliente = new Cliente(
+                if (request.DataNascimento > DateTime.Today.AddYears(-18))
+                    return ResultViewModel<ClienteResponse>.Failure(Error.Validation("Clientes.Application.Services.Implementations.CadastrarCliente", "O cliente deve ter pelo menos 18 anos."));
+
+                    var cliente = new Cliente(
                     request.Nome.Trim(),
                     request.DataNascimento,
                     request.Cpf,
-                    request.Email.Trim());
+                    request.Email.Trim(),
+                    request.RendaMensal);
 
                 await _clienteRepository.CadastrarClienteAsync(cliente);
 
