@@ -1,6 +1,17 @@
+
 @Clientes.API_HostAddress = http://localhost:5057
 
-GET {{Clientes.API_HostAddress}}/weatherforecast/
-Accept: application/json
+### Cadastrar cliente
+POST {{Clientes.API_HostAddress}}/api/v1/clientes
+Content-Type: application/json
 
-###
+{
+  "nome": "Bruno da Silva",
+  "dataNascimento": "2000-05-15T00:00:00",
+  "cpf": "52998224725",
+  "email": "bruno.teste@example.com"
+}
+
+### Buscar cliente por ID
+GET {{Clientes.API_HostAddress}}/api/v1/clientes/CD15E362-D4B5-463C-8B06-5602B859DA64
+Accept: application/json
