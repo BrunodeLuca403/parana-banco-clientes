@@ -3,7 +3,7 @@ using Clientes.Core.Validations;
 
 namespace Clientes.Application.DTOs
 {
-    public class CriarClienteRequest
+    public class CadastrarClienteRequest
     {
         [Required(ErrorMessage = "O nome é obrigatório.")]
         [MaxLength(150, ErrorMessage = "O nome deve ter no máximo 150 caracteres.")]
