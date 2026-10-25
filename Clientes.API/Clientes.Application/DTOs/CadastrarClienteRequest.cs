@@ -23,6 +23,6 @@ namespace Clientes.Application.DTOs
 
         [Required(ErrorMessage = "A renda mensal é obrigatória.")]
         [Range(0.01, 999999999.99, ErrorMessage = "A renda mensal deve ser maior que zero.")]
-        public decimal RendaMensal { get; private set; }
+        public decimal RendaMensal { get; set; }
     }
 }

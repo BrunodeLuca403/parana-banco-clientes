@@ -4,14 +4,14 @@
 ### Cadastrar cliente
 POST {{Clientes.API_HostAddress}}/api/v1/clientes
 Content-Type: application/json
-
 {
-  "nome": "Bruno da Silva",
-  "dataNascimento": "2000-05-15T00:00:00",
-  "cpf": "52998224725",
-  "email": "bruno.teste@example.com"
+  "nome": "teste",
+  "dataNascimento": "1966-02-18T00:00:00",
+  "cpf": "98468057053",
+  "email": "ronaldo@gmail.com",
+  "rendaMensal": 5200.90
 }
 
 ### Buscar cliente por ID
-GET {{Clientes.API_HostAddress}}/api/v1/clientes/CD15E362-D4B5-463C-8B06-5602B859DA64
+GET {{Clientes.API_HostAddress}}/api/v1/clientes/648a87e3-afbf-465e-b84c-c717fec4067d
 Accept: application/json

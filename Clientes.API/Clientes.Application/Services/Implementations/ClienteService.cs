@@ -2,6 +2,7 @@ using Clientes.Application.Common;
 using Clientes.Application.DTOs;
 using Clientes.Application.Services.Interface;
 using Clientes.Core.Entitys;
+using Clientes.Core.Events;
 using Clientes.Core.Repository;
 
 namespace Clientes.Application.Services.Implementations
@@ -9,10 +10,14 @@ namespace Clientes.Application.Services.Implementations
     public class ClienteService : IClienteService
     {
         private readonly IClienteRepository _clienteRepository;
+        private readonly IClienteEventPublisher _eventPublisher;
 
-        public ClienteService(IClienteRepository clienteRepository)
+        public ClienteService(
+            IClienteRepository clienteRepository,
+            IClienteEventPublisher eventPublisher)
         {
             _clienteRepository = clienteRepository;
+            _eventPublisher = eventPublisher;
         }
 
         public async Task<ResultViewModel<ClienteResponse>> CadastrarClienteAsync(CadastrarClienteRequest request)
@@ -33,6 +38,17 @@ namespace Clientes.Application.Services.Implementations
                     request.RendaMensal);
 
                 await _clienteRepository.CadastrarClienteAsync(cliente);
+
+                var evento = new ClienteCadastradoEvent(
+                    cliente.Id,
+                    cliente.Nome,
+                    cliente.Cpf,
+                    cliente.Email,
+                    cliente.RendaMensal,
+                    cliente.DataNascimento,
+                    DateTime.UtcNow);
+
+                await _eventPublisher.PublicarClienteCadastradoAsync(evento);
 
                 var response = ClienteResponse.FromEntity(cliente);
 

@@ -10,6 +10,7 @@ namespace Clientes.Application.DTOs
         public string Cpf { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public DateTime CreatAt { get; set; }
+        public decimal RendaMensal { get; set; }
 
         public static ClienteResponse FromEntity(Cliente cliente) => new()
         {
@@ -18,7 +19,8 @@ namespace Clientes.Application.DTOs
             DataNascimento = cliente.DataNascimento,
             Cpf = cliente.Cpf,
             Email = cliente.Email,
-            CreatAt = cliente.CreatAt
+            CreatAt = cliente.CreatAt,
+            RendaMensal = cliente.RendaMensal
         };
     }
 }
