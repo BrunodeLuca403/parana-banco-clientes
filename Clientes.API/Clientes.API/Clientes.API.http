@@ -7,7 +7,7 @@ Content-Type: application/json
 {
   "nome": "teste",
   "dataNascimento": "1966-02-18T00:00:00",
-  "cpf": "98468057053",
+  "cpf": "620.575.440-10",
   "email": "ronaldo@gmail.com",
   "rendaMensal": 5200.90
 }

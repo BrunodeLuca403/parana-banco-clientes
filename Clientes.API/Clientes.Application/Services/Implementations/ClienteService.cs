@@ -24,7 +24,10 @@ namespace Clientes.Application.Services.Implementations
         {
             try
             {
-                if (await _clienteRepository.ExisteCpfAsync(request.Cpf))
+
+                var cpfNormalizado = new string(request.Cpf.Where(char.IsDigit).ToArray());
+
+                if (await _clienteRepository.ExisteCpfAsync(cpfNormalizado))
                     return ResultViewModel<ClienteResponse>.Failure(Error.Validation("Clientes.Application.Services.Implementations.CadastrarCliente", "Já existe um cliente cadastrado com este CPF."));
 
                 if (request.DataNascimento > DateTime.Today.AddYears(-18))
@@ -33,7 +36,7 @@ namespace Clientes.Application.Services.Implementations
                     var cliente = new Cliente(
                     request.Nome.Trim(),
                     request.DataNascimento,
-                    request.Cpf,
+                    cpfNormalizado,
                     request.Email.Trim(),
                     request.RendaMensal);
 
@@ -56,7 +59,7 @@ namespace Clientes.Application.Services.Implementations
 
             } catch (Exception ex) {
 
-                return ResultViewModel<ClienteResponse>.Failure(Error.Failure("Clientes.Application.Services.Implementations.CadastrarCliente", ex.Message));
+                return ResultViewModel<ClienteResponse>.Failure(Error.Failure("Clientes.Application.Services.Implementations.CadastrarCliente", "Erro interno ao cadastrar o cliente."));
             }
             
         }
@@ -65,6 +68,10 @@ namespace Clientes.Application.Services.Implementations
         {
             var cliente = await _clienteRepository.BuscarClienteIdAsync(clienteId);
 
+            if(cliente is null)
+            {
+                return ResultViewModel<ClienteResponse?>.Failure(Error.NotFound("Clientes.Application.Services.Implementations.BuscarClientePorIdAsync", $"Cliente com Id {clienteId} não encontrado"));
+            }
             var DtoCliente = new ClienteResponse
             {
                 Id = cliente.Id,
@@ -74,10 +81,7 @@ namespace Clientes.Application.Services.Implementations
                 DataNascimento = cliente.DataNascimento
             };
 
-            if(cliente is null)
-            {
-                return ResultViewModel<ClienteResponse?>.Failure(Error.NotFound("Clientes.Application.Services.Implementations.BuscarClientePorIdAsync", $"Cliente com Id {clienteId} não encontrado"));
-            }
+            
 
             return ResultViewModel<ClienteResponse?>.Success(DtoCliente);
 

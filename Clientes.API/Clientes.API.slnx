@@ -3,4 +3,5 @@
   <Project Path="Cliente.Infrastructure/Clientes.Infrastructure.csproj" />
   <Project Path="Clientes.API/Clientes.API.csproj" />
   <Project Path="Clientes.Application/Clientes.Application.csproj" />
+  <Project Path="Clientes.Testes/Clientes.Testes.csproj" Id="a9ebfc07-3dbe-47eb-860a-6bb68cef432b" />
 </Solution>
