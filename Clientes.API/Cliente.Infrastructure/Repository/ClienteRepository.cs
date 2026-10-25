@@ -10,29 +10,29 @@ namespace Clientes.Infrastructure.Repository
 {
     public class ClienteRepository : IClienteRepository
     {
-        private readonly ClienteDbContext _Repository;
+        private readonly ClienteDbContext _db;
 
         public ClienteRepository(ClienteDbContext repository)
         {
-            _Repository = repository;
+            _db = repository;
         }
 
         public async Task<Cliente?> BuscarClienteIdAsync(Guid clienteId)
         {
-            return await _Repository.Clientes
+            return await _db.Clientes
                 .SingleOrDefaultAsync(c => c.Id == clienteId && !c.IsDelete);
         }
 
         public async Task<bool> ExisteCpfAsync(string cpf)
         {
-            return await _Repository.Clientes
+            return await _db.Clientes
                 .AnyAsync(c => c.Cpf == cpf && !c.IsDelete);
         }
 
         public async Task CadastrarClienteAsync(Cliente cliente)
         {
-            await _Repository.Clientes.AddAsync(cliente);
-            await _Repository.SaveChangesAsync();
+            await _db.Clientes.AddAsync(cliente);
+            await _db.SaveChangesAsync();
         }
     }
 }
