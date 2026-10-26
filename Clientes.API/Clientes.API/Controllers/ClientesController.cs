@@ -17,26 +17,34 @@ namespace Clientes.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClienteResponse>> CadastrarCliente([FromBody] CadastrarClienteRequest request)
+        public async Task<ActionResult<ResultViewModel<ClienteResponse>>> CadastrarCliente([FromBody] CadastrarClienteRequest request)
         {
-            var cadastrarCliente = await _clienteService.CadastrarClienteAsync(request);
+            var resultado = await _clienteService.CadastrarClienteAsync(request);
 
-            if (!cadastrarCliente.IsSuccess)
+            if (!resultado.IsSuccess)
             {
-                return BadRequest(cadastrarCliente.Error);
+                return BadRequest(ResultViewModel<ClienteResponse>.Failure(resultado.Error));
             }
-            return Ok(cadastrarCliente);
+
+            var cliente = resultado.Value;
+
+            return CreatedAtAction(
+                nameof(GetByIdCliente),
+                new { id = cliente.Id },
+                ResultViewModel<ClienteResponse>.Success(cliente));
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<ClienteResponse>> GetByIdCares([FromRoute] Guid id)
+        public async Task<ActionResult<ResultViewModel<ClienteResponse>>> GetByIdCliente([FromRoute] Guid id)
         {
-            var cliente = await _clienteService.BuscarClientePorIdAsync(id);
-            if (!cliente.IsSuccess)
+            var resultado = await _clienteService.BuscarClientePorIdAsync(id);
+
+            if (!resultado.IsSuccess)
             {
-                return NotFound(cliente.Error);
+                return NotFound(ResultViewModel<ClienteResponse>.Failure(resultado.Error));
             }
-            return Ok(cliente);
+
+            return Ok(ResultViewModel<ClienteResponse>.Success(resultado.Value));
         }
 
     }
